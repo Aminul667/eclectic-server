@@ -51,6 +51,7 @@ async function run() {
 
     // start of the backend
     const usersCollection = client.db("eclecticDB").collection("users");
+    const postsCollection = client.db("eclecticDB").collection("posts");
 
     app.post("/jwt", (req, res) => {
       const user = req.body;
@@ -70,6 +71,13 @@ async function run() {
         return res.send({ message: "User already existed" });
       }
       const result = await usersCollection.insertOne(user);
+      res.send(result);
+    });
+
+    // create all blog posts
+    app.post("/posts", async (req, res) => {
+      const post = req.body;
+      const result = await postsCollection.insertOne(post);
       res.send(result);
     });
 
