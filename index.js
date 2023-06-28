@@ -32,7 +32,7 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.qbyf5is.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -81,9 +81,17 @@ async function run() {
       res.send(result);
     });
 
-    // read blog post data: verifyJWT
+    // read blog posts data: verifyJWT
     app.get("/posts", async (req, res) => {
       const result = await postsCollection.find().toArray();
+      res.send(result);
+    });
+
+    // single blog post data
+    app.get("/posts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await postsCollection.findOne(query);
       res.send(result);
     });
 
