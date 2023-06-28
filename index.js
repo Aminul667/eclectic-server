@@ -81,6 +81,12 @@ async function run() {
       res.send(result);
     });
 
+    // read blog post data: verifyJWT
+    app.get("/posts", async (req, res) => {
+      const result = await postsCollection.find().toArray();
+      res.send(result);
+    });
+
     // end of the backend
 
     // Send a ping to confirm a successful connection
