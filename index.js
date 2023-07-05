@@ -87,10 +87,24 @@ async function run() {
       res.send(result);
     });
 
+    // read blog posts data by category
+    app.get("/categories/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log('id name', id)
+      if (id === "all") {
+        const result = await postsCollection.find().toArray();
+        res.send(result);
+      } else {
+        const query = { category: id };
+        const result = await postsCollection.find(query).toArray();
+        res.send(result);
+      }
+    });
+
     // single blog post data
     app.get("/posts/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await postsCollection.findOne(query);
       res.send(result);
     });
