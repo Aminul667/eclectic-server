@@ -91,13 +91,27 @@ async function run() {
     app.get("/categories/:id", async (req, res) => {
       const id = req.params.id;
       if (id === "all") {
-        const result = await postsCollection.find().sort({ $natural: -1 }).toArray();
+        const result = await postsCollection
+          .find()
+          .sort({ $natural: -1 })
+          .toArray();
         res.send(result);
       } else {
         const query = { category: id };
-        const result = await postsCollection.find(query).sort({ $natural: -1 }).toArray();
+        const result = await postsCollection
+          .find(query)
+          .sort({ $natural: -1 })
+          .toArray();
         res.send(result);
       }
+    });
+
+    // blog post by user
+    app.get("/posts/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await postsCollection.find(query).sort({ $natural: -1 }).toArray();
+      res.send(result);
     });
 
     // single blog post data
