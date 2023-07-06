@@ -90,13 +90,12 @@ async function run() {
     // read blog posts data by category
     app.get("/categories/:id", async (req, res) => {
       const id = req.params.id;
-      console.log('id name', id)
       if (id === "all") {
-        const result = await postsCollection.find().toArray();
+        const result = await postsCollection.find().sort({ $natural: -1 }).toArray();
         res.send(result);
       } else {
         const query = { category: id };
-        const result = await postsCollection.find(query).toArray();
+        const result = await postsCollection.find(query).sort({ $natural: -1 }).toArray();
         res.send(result);
       }
     });
