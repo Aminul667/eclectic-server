@@ -107,7 +107,7 @@ async function run() {
     });
 
     // blog post by user
-    app.get("/posts/:email", async (req, res) => {
+    app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await postsCollection.find(query).sort({ $natural: -1 }).toArray();
