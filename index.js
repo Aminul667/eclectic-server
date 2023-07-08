@@ -129,7 +129,6 @@ async function run() {
     app.patch("/users/posts/:id", async (req, res) => {
       const id = req.params.id;
       const updatedObject = req.body;
-      // console.log(updatedObject);
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
@@ -140,6 +139,14 @@ async function run() {
         },
       };
       const result = await postsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+    // delete a post, varify JWT, Admin
+    app.delete("/post/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await postsCollection.deleteOne(query);
       res.send(result);
     });
 
