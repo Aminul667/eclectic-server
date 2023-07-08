@@ -110,7 +110,10 @@ async function run() {
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
-      const result = await postsCollection.find(query).sort({ $natural: -1 }).toArray();
+      const result = await postsCollection
+        .find(query)
+        .sort({ $natural: -1 })
+        .toArray();
       res.send(result);
     });
 
@@ -119,6 +122,24 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await postsCollection.findOne(query);
+      res.send(result);
+    });
+
+    // update a post
+    app.patch("/users/posts/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedObject = req.body;
+      // console.log(updatedObject);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: updatedObject.title,
+          category: updatedObject.category,
+          lastUpdated: updatedObject.lastUpdated,
+          post: updatedObject.post,
+        },
+      };
+      const result = await postsCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
