@@ -90,14 +90,18 @@ async function run() {
     // read blog posts data by category
     app.get("/categories/:id", async (req, res) => {
       const id = req.params.id;
+      const search = req.query.search;
+      console.log(search);
+
       if (id === "all") {
+        const query = { title: { $regex: search, $options: "i" } };
         const result = await postsCollection
-          .find()
+          .find(query)
           .sort({ $natural: -1 })
           .toArray();
         res.send(result);
       } else {
-        const query = { category: id };
+        const query = { category: id, title: { $regex: search, $options: "i" } };
         const result = await postsCollection
           .find(query)
           .sort({ $natural: -1 })
