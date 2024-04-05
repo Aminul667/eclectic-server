@@ -52,6 +52,7 @@ async function run() {
     // start of the backend
     const usersCollection = client.db("eclecticDB").collection("users");
     const postsCollection = client.db("eclecticDB").collection("posts");
+    const bookmarksCollection = client.db("eclecticDB").collection("bookmarks");
 
     app.post("/jwt", (req, res) => {
       const user = req.body;
@@ -78,6 +79,13 @@ async function run() {
     app.post("/posts", async (req, res) => {
       const post = req.body;
       const result = await postsCollection.insertOne(post);
+      res.send(result);
+    });
+
+    // create bookmarked posts
+    app.post("/bookmarks", async (req, res) => {
+      const bookmarked = req.body;
+      const result = await bookmarksCollection.insertOne(bookmarked);
       res.send(result);
     });
 
@@ -110,6 +118,12 @@ async function run() {
           .toArray();
         res.send(result);
       }
+
+      // read bookmark post data
+      // app.get("/bookmarks", async (req, res) => {
+      //   const result = await bookmarksCollection.find().toArray();
+      //   res.send(result);
+      // });
     });
 
     // blog post by user
