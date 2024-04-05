@@ -181,6 +181,14 @@ async function run() {
       res.send(result);
     });
 
+    // delete a bookmarked article
+    app.delete("/bookmark/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bookmarksCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // end of the backend
 
     // Send a ping to confirm a successful connection
