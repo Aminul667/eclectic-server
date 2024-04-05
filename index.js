@@ -139,9 +139,20 @@ async function run() {
       res.send(result);
     });
 
-    // read bookmark post data
+    // read bookmarked posts data
     app.get("/bookmarks", async (req, res) => {
       const result = await bookmarksCollection.find().toArray();
+      res.send(result);
+    });
+
+    // bookmarked posts by a single user
+    app.get("/bookmarks/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { bookmarkedBy: email };
+      const result = await bookmarksCollection
+        .find(query)
+        .sort({ $natural: -1 })
+        .toArray();
       res.send(result);
     });
 
