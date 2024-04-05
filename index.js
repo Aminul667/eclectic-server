@@ -118,12 +118,6 @@ async function run() {
           .toArray();
         res.send(result);
       }
-
-      // read bookmark post data
-      // app.get("/bookmarks", async (req, res) => {
-      //   const result = await bookmarksCollection.find().toArray();
-      //   res.send(result);
-      // });
     });
 
     // blog post by user
@@ -142,6 +136,12 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await postsCollection.findOne(query);
+      res.send(result);
+    });
+
+    // read bookmark post data
+    app.get("/bookmarks", async (req, res) => {
+      const result = await bookmarksCollection.find().toArray();
       res.send(result);
     });
 
